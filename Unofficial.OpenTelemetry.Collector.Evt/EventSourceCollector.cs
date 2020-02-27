@@ -19,7 +19,7 @@ namespace Unofficial.OpenTelemetry.Collector.Evt
         }
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            if (_convertFunc != null)
+            if (_convertFunc == null)
             {
                 _Tracer.CurrentSpan.AddEvent(new Event(eventData.EventName, new Dictionary<string, object>()
                 {

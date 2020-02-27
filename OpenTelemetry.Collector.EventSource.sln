@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unofficial.OpenTelemetry.Collector.EventSource", "Unofficial.OpenTelemetry.Collector.Evt\Unofficial.OpenTelemetry.Collector.EventSource.csproj", "{E94BB3A5-FEBC-4832-988F-D8B60DEFD079}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{1493F984-F6A2-4F7D-A1E0-F72C424FB7C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicSample", "sample\BasicSample\BasicSample.csproj", "{55284EDC-0C51-4A1B-9294-11062006CEBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,20 @@ Global
 		{E94BB3A5-FEBC-4832-988F-D8B60DEFD079}.Release|x64.Build.0 = Release|Any CPU
 		{E94BB3A5-FEBC-4832-988F-D8B60DEFD079}.Release|x86.ActiveCfg = Release|Any CPU
 		{E94BB3A5-FEBC-4832-988F-D8B60DEFD079}.Release|x86.Build.0 = Release|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Debug|x64.Build.0 = Debug|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Debug|x86.Build.0 = Debug|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Release|x64.ActiveCfg = Release|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Release|x64.Build.0 = Release|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{55284EDC-0C51-4A1B-9294-11062006CEBE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{55284EDC-0C51-4A1B-9294-11062006CEBE} = {1493F984-F6A2-4F7D-A1E0-F72C424FB7C5}
 	EndGlobalSection
 EndGlobal
