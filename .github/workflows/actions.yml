@@ -1,0 +1,85 @@
+name: .NET Core Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["windows-latest"]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core 2.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: "2.1.607"
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: "3.0.101"
+    - name: Build with dotnet(Release)
+      run: dotnet build -c Release
+    - name: Creating nuget package
+      run: dotnet pack -c Release -o dist
+    - name: collect nuget package as artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: nupkg
+        path: dist/*.nupkg
+  release:
+    runs-on: "windows-latest"
+    needs: ["build"]
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup .NET Core 2.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "2.1.607"
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "3.0.101"
+      - name: downloading nuget package
+        uses: actions/download-artifact@v1
+        with:
+          name: "nupkg"
+          path: nupkg
+      - name: create github release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{github.ref}}
+          draft: true
+          prerelease: false
+          release_name: "Release ${{github.ref}}"
+      - name: extract tag name
+        uses: frabert/replace-string-action@v1
+        with:
+          pattern: "refs/tags/"
+          string: ${{github.ref}}
+          replace-with: ""
+        id: extract_tag_name
+      - name: publish nupkg as github release assets
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: nupkg/Unofficial.OpenTelemetry.Collector.EventSource.${{ steps.extract_tag_name.outputs.replaced }}.nupkg
+          asset_name: Unofficial.OpenTelemetry.Collector.EventSource.${{ steps.extract_tag_name.outputs.replaced }}.nupkg
+          asset_content_type: application/zip
+      - name: publish snupkg as github release assets
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: nupkg/Unofficial.OpenTelemetry.Collector.EventSource.${{ steps.extract_tag_name.outputs.replaced }}.snupkg
+          asset_name: Unofficial.OpenTelemetry.Collector.EventSource.${{ steps.extract_tag_name.outputs.replaced }}.snupkg
+          asset_content_type: application/zip
+      - name: upload nupkg to nugetorg
+        run: "dotnet nuget push -k \"${{secrets.NUGET_API_KEY}}\" -s https://api.nuget.org/v3/index.json nupkg/Unofficial.OpenTelemetry.Collector.EventSource.${{ steps.extract_tag_name.outputs.replaced }}.nupkg"
