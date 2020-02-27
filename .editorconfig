@@ -1,0 +1,7 @@
+[*.cs]
+indent_size = 4
+indent_style = space
+
+[*.csproj]
+indent_size = 4
+indent_style = space
