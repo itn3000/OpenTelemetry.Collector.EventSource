@@ -8,7 +8,7 @@ This is the C# library for collecting [EventSource](https://docs.microsoft.com/e
 
 ## Installing from NuGet
 
-add `Unofficial.OpenTelemetry.Collector.Evt` to your nuget package reference.
+add `Unofficial.OpenTelemetry.Collector.EventSource` to your nuget package reference.
 
 available version is listed in [nuget project page](https://www.nuget.org/packages/Unofficial.OpenTelemetry.Collector.EventSource)
 
