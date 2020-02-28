@@ -1,6 +1,6 @@
 # Overview
 
-[![NuGet Badge](https://buildstats.info/nuget/Unofficial.OpenTelemetry.Collector.EventSource?includePreReleases=true)](https://www.nuget.org/packages/Unofficial.OpenTelemetry.Collector.EventSource)
+[![Nuget](https://img.shields.io/nuget/v/Unofficial.OpenTelemetry.Collector.EventSource)](https://www.nuget.org/packages/Unofficial.OpenTelemetry.Collector.EventSource)
 
 This is the C# library for collecting [EventSource](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventsource) with [opentelemetry](https://opentelemetry.io)
 
