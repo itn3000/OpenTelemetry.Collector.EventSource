@@ -24,7 +24,7 @@ jobs:
       run: dotnet pack -c Release -o dist
       if: "startsWith(github.ref, 'refs/tags/')"
     - name: Creating nuget package(Development)
-      run: "dotnet pack -c Release -o dist --version-suffix alpha.${{ env.GITHUB_RUN_NUMBER }}"
+      run: "dotnet pack -c Release -o dist --version-suffix alpha.${{ github.run_id }}"
       if: "!startsWith(github.ref, 'refs/tags/')"
     - name: collect nuget package as artifact
       uses: actions/upload-artifact@v1
