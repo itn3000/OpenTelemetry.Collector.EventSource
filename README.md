@@ -1,5 +1,7 @@
 # Overview
 
+[![NuGet Badge](https://buildstats.info/nuget/Unofficial.OpenTelemetry.Collector.EventSource?includePreReleases=true)](https://www.nuget.org/packages/Unofficial.OpenTelemetry.Collector.EventSource)
+
 This is the C# library for collecting [EventSource](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventsource) with [opentelemetry](https://opentelemetry.io)
 
 # Usage
@@ -7,6 +9,8 @@ This is the C# library for collecting [EventSource](https://docs.microsoft.com/e
 ## Installing from NuGet
 
 add `Unofficial.OpenTelemetry.Collector.Evt` to your nuget package reference.
+
+available version is listed in [nuget project page](https://www.nuget.org/packages/Unofficial.OpenTelemetry.Collector.EventSource)
 
 ## Using with IServiceCollection
 
