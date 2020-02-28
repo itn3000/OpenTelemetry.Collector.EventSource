@@ -5,9 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- using myget version for console exporter -->
-    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="0.2.0-alpha.197" />
-    <PackageReference Include="OpenTelemetry.Hosting" Version="0.2.0-alpha.197" />
+    <PackageReference Include="OpenTelemetry.Hosting" Version="0.2.0-alpha.179" />
   </ItemGroup>
 
   <PropertyGroup>

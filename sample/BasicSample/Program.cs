@@ -1,8 +1,8 @@
 ﻿using System;
 using OpenTelemetry.Trace.Configuration;
-using OpenTelemetry.Exporter.Console;
 using OpenTelemetry;
 using OpenTelemetry.Trace;
+using OpenTelemetry.Trace.Export;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -41,7 +41,14 @@ namespace BasicSample
                     services.AddOpenTelemetry(builder =>
                     {
                         builder.UseEventSource(MyEventSource.Log, EventLevel.LogAlways);
-                        builder.UseConsole(options => options.Pretty = true);
+                        builder.AddDelegateExporter((dataList, ct) =>
+                        {
+                            foreach(var data in dataList)
+                            {
+                                Console.WriteLine($"{data.Name}, {data.Kind}, {data.Status}");
+                            }
+                            return Task.FromResult(SpanExporter.ExportResult.Success);
+                        });
                     });
                     services.AddHostedService<Program>();
                 })
