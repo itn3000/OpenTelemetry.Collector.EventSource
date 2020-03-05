@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using OpenTelemetry.Trace.Configuration;
 using OpenTelemetry.Trace.Export;
 
-namespace BasicSample
+namespace SampleUtil
 {
     using OnFinishFunc = Func<CancellationToken, Task>;
     using OnProcessFunc = Func<IEnumerable<SpanData>, CancellationToken, Task<SpanExporter.ExportResult>>;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenTelemetry.Trace.Configuration;
 using OpenTelemetry;
 using OpenTelemetry.Trace;
@@ -11,7 +12,7 @@ using System.Threading;
 using System.Diagnostics.Tracing;
 using SampleUtil;
 
-namespace BasicSample
+namespace SystemEventSample
 {
     [EventSource]
     public class MyEventSource : EventSource
@@ -57,7 +58,8 @@ namespace BasicSample
                 {
                     services.AddOpenTelemetry(builder =>
                     {
-                        builder.UseEventSource(MyEventSource.Log, EventLevel.LogAlways);
+                        builder.UseEventSource(EventSourceCollectorOption.Create()
+                            .Add(MyEventSource.Log, new EventEnableOption()));
                         builder.AddDelegateExporter((dataList, ct) =>
                         {
                             ProcessEventData(dataList);
