@@ -59,7 +59,19 @@ namespace SystemEventSample
                     services.AddOpenTelemetry(builder =>
                     {
                         builder.UseEventSource(EventSourceCollectorOption.Create()
-                            .Add(MyEventSource.Log, new EventEnableOption()));
+                            .SetIsEnableFunc((src) =>
+                            {
+                                if(!src.Name.StartsWith("System.Threading"))
+                                {
+                                    Console.WriteLine($"{src.Name} enabled");
+                                    return (true, new EventEnableOption());
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"{src.Name} ignored");
+                                    return (false, default);
+                                }
+                            }));
                         builder.AddDelegateExporter((dataList, ct) =>
                         {
                             ProcessEventData(dataList);

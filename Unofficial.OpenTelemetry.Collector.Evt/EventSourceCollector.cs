@@ -62,10 +62,6 @@ namespace Unofficial.OpenTelemetry.Collector.Evt
         }
         protected override void OnEventSourceCreated(EventSource eventSource)
         {
-            AddEventInternal(eventSource);
-        }
-        void AddEventInternal(EventSource eventSource)
-        {
             if(_isEnabledFunc != null)
             {
                 var (isEnable, opt) = _isEnabledFunc(eventSource);

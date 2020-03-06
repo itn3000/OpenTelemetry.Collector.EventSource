@@ -69,7 +69,10 @@ namespace OpenTelemetry.Trace.Configuration
                 var collector = new EventSourceAdapter(tracer, convertFunc);
                 foreach (var pair in events)
                 {
-                    collector.EnableEvents(pair.Key, pair.Value);
+                    collector.Add(pair.Key, new EventEnableOption()
+                    {
+                        Level = pair.Value
+                    });
                 }
                 return collector;
             });
