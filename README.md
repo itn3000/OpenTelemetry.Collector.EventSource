@@ -77,3 +77,13 @@ using(var factory = TracerFactory.Create(builder =>
 
 * [basic sample is here](sample/BasicSample)
 * [events from framework sample is here](sample/SystemEventSample)
+
+# ChangeLog
+
+## 0.2.0
+
+Add `UseEventSource(EventSourceCollectorOption)` for collecting framework events.
+
+## 0.1.0
+
+First release
