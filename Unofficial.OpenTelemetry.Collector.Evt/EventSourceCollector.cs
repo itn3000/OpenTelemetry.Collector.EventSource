@@ -11,20 +11,28 @@ namespace Unofficial.OpenTelemetry.Collector.Evt
         Tracer _Tracer;
         Func<EventWrittenEventArgs, Event> _convertFunc;
         Func<EventSource, (bool, EventEnableOption)> _isEnabledFunc;
+        List<EventSource> _eventsBeforeInit = new List<EventSource>();
+        static readonly Func<EventSource, (bool, EventEnableOption)> _alwaysDisable = (ev) => (false, default);
         public EventSourceAdapter(Tracer tracer) : this(tracer, null)
         {
         }
-        public EventSourceAdapter(Tracer tracer, Func<EventWrittenEventArgs, Event> convertFunc)
+        public EventSourceAdapter(Tracer tracer, Func<EventWrittenEventArgs, Event> convertFunc) : this(tracer, convertFunc, _alwaysDisable)
         {
-            _Tracer = tracer;
-            _convertFunc = convertFunc;
-            _isEnabledFunc = null;
         }
         public EventSourceAdapter(Tracer tracer, Func<EventWrittenEventArgs, Event> convertFunc, Func<EventSource, (bool, EventEnableOption)> isEnabled)
         {
             _Tracer = tracer;
             _convertFunc = convertFunc;
-            _isEnabledFunc = isEnabled;
+            _isEnabledFunc = isEnabled ?? _alwaysDisable;
+            // OnSourceCreated may be called before constructor
+            foreach (var evsrc in _eventsBeforeInit)
+            {
+                var (isenabled, opts) = _isEnabledFunc(evsrc);
+                if (isenabled)
+                {
+                    Add(evsrc, opts);
+                }
+            }
         }
         public void Add(EventSource source, EventEnableOption option)
         {
@@ -48,13 +56,13 @@ namespace Unofficial.OpenTelemetry.Collector.Evt
         }
         void WriteEventInternal(Event ev)
         {
-            if(_Tracer.CurrentSpan.Context.IsValid)
+            if (_Tracer.CurrentSpan.Context.IsValid)
             {
                 _Tracer.CurrentSpan.AddEvent(ev);
             }
             else
             {
-                using(_Tracer.StartActiveSpan(ev.Name, out var span))
+                using (_Tracer.StartActiveSpan(ev.Name, out var span))
                 {
                     span.AddEvent(ev);
                 }
@@ -62,17 +70,19 @@ namespace Unofficial.OpenTelemetry.Collector.Evt
         }
         protected override void OnEventSourceCreated(EventSource eventSource)
         {
-            if(_isEnabledFunc != null)
+            base.OnEventSourceCreated(eventSource);
+            if (_isEnabledFunc != null)
             {
                 var (isEnable, opt) = _isEnabledFunc(eventSource);
-                if(isEnable)
+                if (isEnable)
                 {
                     EnableEvents(eventSource, opt.Level, opt.Keywords, opt.EventArguments);
                 }
             }
             else
             {
-                base.OnEventSourceCreated(eventSource);
+                // before constructor
+                _eventsBeforeInit.Add(eventSource);
             }
         }
     }
