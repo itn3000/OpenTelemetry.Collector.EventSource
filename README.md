@@ -12,6 +12,64 @@ add `Unofficial.OpenTelemetry.Collector.EventSource` to your nuget package refer
 
 available version is listed in [nuget project page](https://www.nuget.org/packages/Unofficial.OpenTelemetry.Collector.EventSource)
 
+## Initialize
+
+### Add Custom Events
+
+if you want to add your EventSource, you should use `UseEventSource(this TracerBuilder builder, EventSource ev, EventLevel level)` or
+`UseEventSource(this TracerBuilder builder, IEnumerable<KeyValuePair<EventSource, EventLevel>> events)`
+sample code is here
+
+```csharp
+// using System.Diagnostics.Tracing;
+// using OpenTelemetry.Trace;
+// using OpenTelemetry.Trace.Configuration;
+// "YourEventSource.Log" is static readonly instance of your custom EventSource.
+using(var factory = TracerFactory.Create(builder => 
+{
+    builder.UseEventSource(YourEventSource.Log, EventLevel.Always);
+    // add your exporter...
+}))
+{
+    // ...
+}
+```
+
+### Add Framework Events
+
+if you want to add Framework's EventSource(like "System.Runtime", or another EventSource you cannot get instance directly),
+set `EventSourceCollectorOption.IsEnableFunc` and pass in `UseEventSource`.
+sample code is here
+
+```csharp
+// using System.Diagnostics.Tracing;
+// using OpenTelemetry.Trace;
+// using OpenTelemetry.Trace.Configuration;
+// "YourEventSource.Log" is static readonly instance of your custom EventSource.
+
+using(var factory = TracerFactory.Create(builder => 
+{
+    builder.UseEventSource(EventSourceCollectorOption.Create().SetIsEnableFunc(src =>
+    {
+        // if System.Threading.Tasks.TplEventSource enabled, stackoverflow error may be occured when creating span
+        if(!src.Name != "System.Threading.Tasks.TplEventSource")
+        {
+            Console.WriteLine($"{src.Name} enabled");
+            return (true, new EventEnableOption());
+        }
+        else
+        {
+            Console.WriteLine($"{src.Name} ignored");
+            return (false, default);
+        }
+    }));
+    // add your exporter...
+}))
+{
+    // ...
+}
+```
+
 ## Using with IServiceCollection
 
 1. define your eventsource, ex: 
