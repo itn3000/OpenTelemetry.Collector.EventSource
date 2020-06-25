@@ -64,7 +64,7 @@ namespace OpenTelemetry.Trace.Configuration
         }
         public static TracerBuilder UseEventSource(this TracerBuilder builder, IEnumerable<KeyValuePair<EventSource, EventLevel>> events, Func<EventWrittenEventArgs, Event> convertFunc = null)
         {
-            builder.AddCollector(tracer =>
+            builder.AddAdapter(tracer =>
             {
                 var collector = new EventSourceAdapter(tracer, convertFunc);
                 foreach (var pair in events)
@@ -80,7 +80,7 @@ namespace OpenTelemetry.Trace.Configuration
         }
         public static TracerBuilder UseEventSource(this TracerBuilder builder, EventSourceCollectorOption option)
         {
-            builder.AddCollector(tracer =>
+            builder.AddAdapter(tracer =>
             {
                 var collector = new EventSourceAdapter(tracer, option.ConvertFunc, option.IsEnableFunc);
                 foreach (var (ev, evoption) in option.Events)

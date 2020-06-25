@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Diagnostics.Tracing;
-using OpenTelemetry.Collector;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Trace.Configuration;
 using OpenTelemetry.Trace.Export;
