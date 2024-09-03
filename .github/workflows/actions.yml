@@ -46,7 +46,7 @@ jobs:
         with:
           dotnet-version: "3.1.102"
       - name: downloading nuget package
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4.1.7
         with:
           name: "nupkg"
           path: nupkg
